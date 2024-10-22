@@ -1,13 +1,17 @@
-export interface CuentaInterface{
-    token:string;
-    role:string;
+export interface CuentaInterface {
+  name: string;
+  lastname: string;
+  email: string;
+  profilePicture: string;
+  token: string;
+  role: string;
 }
 
-export interface LoginInterface{
-    email:string;
-    password:string;
+export interface LoginInterface {
+  email: string;
+  password: string;
 }
 
-export interface LoginResponseInterface{
-    token:string;
+export interface LoginResponseInterface {
+  token: string;
 }

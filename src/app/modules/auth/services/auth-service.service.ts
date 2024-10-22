@@ -16,13 +16,12 @@ export class AuthServiceService {
     return this.http.post<LoginResponseInterface>(EP_AUTH.login,data,this.sessionService.baseHeadersPublic)
   }
 
-  getProfile(){
+  getProfile():any{
     return {
       name:'John',
       lastname:'Doe',
       email:'mail@mail.com',
       profilePicture:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRabpp9cRSP2RA-PsVT6watU3wUMgam3AI_ow&s',
-      role: this.authShared.getRoles()[0] //Asumiendo que solo mandamos un rol
     }
   }
 
