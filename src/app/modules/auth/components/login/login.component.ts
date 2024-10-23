@@ -23,6 +23,10 @@ import { Routes_app } from '../../../../core/constants/routes.constants';
 import { HttpErrorResponse } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { RadioButtonModule } from 'primeng/radiobutton';
+import { Observable } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { selectPermissions, selectRoles } from '../../../../core/store/auth/selectors/auth.selectors';
+import { setPermissions, setRoles } from '../../../../core/store/auth/actions/auth.actions';
 
 @Component({
   selector: 'app-login',
@@ -42,12 +46,17 @@ import { RadioButtonModule } from 'primeng/radiobutton';
 export class LoginComponent implements OnDestroy{
   form: FormGroup;
   roles = [RolesEnum.ADMIN,RolesEnum.USER]
+
+  // Observables para roles y permisos usando NgRx
+  roles$: Observable<string[]> = this.store.select(selectRoles);
+  permissions$: Observable<string[]> = this.store.select(selectPermissions);
   constructor(
     private authService: AuthServiceService,
     private authShared: AuthServiceShared,
     private sessionService: SessionService,
     private _formbuilder: FormBuilder,
-    private router: Router
+    private router: Router,
+    private store: Store
   ) {
     this.form = this._formbuilder.group({
       email: new FormControl('', [Validators.required, Validators.email]),
@@ -84,7 +93,7 @@ export class LoginComponent implements OnDestroy{
 
         console.log(userData.role)
         //Guardamos los roles y permisos que simulamos
-        this.updateRolesAndPermissions(userData.role);
+        this.uupdateRolesAndPermissions(userData.role);
 
         //Navegamos hacia el dashboard
         const navigationExtras: NavigationExtras = {
@@ -115,17 +124,22 @@ export class LoginComponent implements OnDestroy{
     })
   }
 
-  updateRolesAndPermissions(rol: string) {
-    this.authShared.setRoles([rol]);
-    if (rol == RolesEnum.USER) {
-      this.authShared.setPermissions([PermisosEnum.LISTAR_POSTS]);
-    } else if (rol == RolesEnum.ADMIN) {
-      this.authShared.setPermissions([
-        PermisosEnum.LISTAR_POSTS,
-        PermisosEnum.CREAR_POST,
-        PermisosEnum.ACTUALIZAR_POST,
-        PermisosEnum.ELIMINAR_POST,
-      ]);
+  uupdateRolesAndPermissions(rol: string) {
+    console.log('Actualizando roles con el rol:', rol); 
+  
+    this.store.dispatch(setRoles({ roles: [rol] }));
+  
+    if (rol === RolesEnum.USER) {
+      this.store.dispatch(setPermissions({ permissions: [PermisosEnum.LISTAR_POSTS] }));
+    } else if (rol === RolesEnum.ADMIN) {
+      this.store.dispatch(setPermissions({
+        permissions: [
+          PermisosEnum.LISTAR_POSTS,
+          PermisosEnum.CREAR_POST,
+          PermisosEnum.ACTUALIZAR_POST,
+          PermisosEnum.ELIMINAR_POST,
+        ],
+      }));
     }
   }
 }

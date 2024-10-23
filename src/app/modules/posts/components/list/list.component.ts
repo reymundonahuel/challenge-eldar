@@ -3,7 +3,7 @@ import { MenuBarComponent } from '../../../../shared/components/menu-bar/menu-ba
 import { ContainerComponent } from '../../../../shared/components/container/container/container.component';
 import { CardModule } from 'primeng/card';
 import { PostsService } from '../../services/posts/posts.service';
-import { AuthServiceShared } from '../../../../shared/services/auth/auth-service.service';
+
 import { ModalsService } from '../../../../shared/services/modals/modals.service';
 import { PostsInterface } from '../../../../core/interfaces/posts.interfaces';
 import { toastAlert } from '../../../../core/utils/alerts.utils';
@@ -20,6 +20,9 @@ import { SkeletonModule } from 'primeng/skeleton';
 import { PermisosEnum } from '../../../../core/enums/permissions.enum';
 import { RolesEnum } from '../../../../core/enums/roles.enum';
 import { TruncarTextoPipe } from "../../../../shared/pipes/truncar-texto.pipe";
+import { Store } from '@ngrx/store';
+import { take } from 'rxjs';
+import { selectRoles, selectPermissions } from '../../../../core/store/auth/selectors/auth.selectors';
 
 
 @Component({
@@ -61,12 +64,18 @@ export class ListComponent implements OnInit {
 
 
   constructor(
-    private authShared: AuthServiceShared,
     private modalService: ModalsService,
-    private postService: PostsService
+    private postService: PostsService,
+    private store:Store
   ) {
-    this.roles = this.authShared.getRoles();
-    this.permisos = this.authShared.getPermissions();
+    this.store.select(selectRoles).pipe(take(1)).subscribe((roles) => {
+      this.roles = roles;
+    });
+
+    // Obtenemos permisos desde el store
+    this.store.select(selectPermissions).pipe(take(1)).subscribe((permissions) => {
+      this.permisos = permissions;
+    });
   }
 
   ngOnInit(): void {

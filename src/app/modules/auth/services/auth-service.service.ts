@@ -3,14 +3,13 @@ import { Injectable } from '@angular/core';
 import { EP_AUTH } from '../../../core/constants/endpoints.constants';
 import { LoginInterface, LoginResponseInterface } from '../../../core/interfaces/login.interfaces';
 import { SessionService } from '../../../shared/services/session/session-service.service';
-import { AuthServiceShared } from '../../../shared/services/auth/auth-service.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthServiceService {
 
-  constructor(private http:HttpClient,private sessionService:SessionService, private authShared:AuthServiceShared) { }
+  constructor(private http:HttpClient,private sessionService:SessionService) { }
 
   doLogin(data:LoginInterface){
     return this.http.post<LoginResponseInterface>(EP_AUTH.login,data,this.sessionService.baseHeadersPublic)

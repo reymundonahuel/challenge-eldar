@@ -3,7 +3,6 @@ import { MenuBarComponent } from '../../../../shared/components/menu-bar/menu-ba
 import { ContainerComponent } from '../../../../shared/components/container/container/container.component';
 import { CardModule } from 'primeng/card';
 import { DashboardService } from '../../services/dashboard.service';
-import { AuthServiceShared } from '../../../../shared/services/auth/auth-service.service';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { RolesEnum } from '../../../../core/enums/roles.enum';
 import { PermisosEnum } from '../../../../core/enums/permissions.enum';
@@ -11,6 +10,9 @@ import { SkeletonModule } from 'primeng/skeleton';
 import { Routes_app } from '../../../../core/constants/routes.constants';
 import { ModalsService } from '../../../../shared/services/modals/modals.service';
 import { TiposModalEnum } from '../../../../core/enums/tiposModal.enum';
+import { Store } from '@ngrx/store';
+import { selectPermissions, selectRoles } from '../../../../core/store/auth/selectors/auth.selectors';
+import { take } from 'rxjs';
 
 @Component({
   selector: 'app-list',
@@ -34,44 +36,46 @@ export class ListComponent implements OnInit {
   constructor(
     private readonly dashboardService: DashboardService,
     private router: Router,
-    private authShared: AuthServiceShared,
-    private modalService:ModalsService
+    private store: Store, // Inyectamos el store de NgRx
+    private modalService: ModalsService
   ) {
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
-        const navigation = this.router.getCurrentNavigation();
-        const state = navigation?.extras?.state;
-
-        if (state && state['data']) {
-          const [roles, permisos] = state['data'];
-          this.roles = roles;
-          this.permisos = permisos;
-        }else{
-          this.roles = this.authShared.getRoles()
-          this.permisos = this.authShared.getPermissions()
-        }
+        this.loadRolesAndPermissionsFromStore();
       }
     });
   }
 
   ngOnInit(): void {
     this.countPosts();
+    this.loadRolesAndPermissionsFromStore();
   }
 
   async countPosts() {
     this.totalPosts = await this.dashboardService.countTotalPosts();
   }
 
+  loadRolesAndPermissionsFromStore() {
+    this.store.select(selectRoles).pipe(take(1)).subscribe((roles) => {
+      this.roles = roles || []; // Manejo de posible undefined
+    });
+
+    this.store.select(selectPermissions).pipe(take(1)).subscribe((permissions) => {
+      this.permisos = permissions || []; // Manejo de posible undefined
+    });
+  }
+
   navigation(resource: string) {
-    this.router.navigate(
-      [resource],
-      this.authShared.navigationExtrasWithRoleAndPermission()
-    );
+    const navigationExtras = {
+      state: {
+        data: [this.roles, this.permisos],
+      },
+    };
+    this.router.navigate([resource], navigationExtras);
   }
 
-  createPostModal(){
-    this.modalService.setModalStatus('create-post',"open",{},TiposModalEnum.CREAR)
+  createPostModal() {
+    this.modalService.setModalStatus('create-post', 'open', {}, TiposModalEnum.CREAR);
   }
-
 
 }

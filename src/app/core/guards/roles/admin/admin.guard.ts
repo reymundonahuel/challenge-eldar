@@ -1,17 +1,23 @@
-import { Inject } from '@angular/core';
+import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
-import { AuthServiceShared } from '../../../../shared/services/auth/auth-service.service';
 import { Routes_app } from '../../../constants/routes.constants';
 import { RolesEnum } from '../../../enums/roles.enum';
+import { Store } from '@ngrx/store';
+import { selectRoles } from '../../../store/auth/selectors/auth.selectors';
+import { map, take } from 'rxjs';
 
 export const adminGuard: CanActivateFn = (route, state) => {
-  const authService = Inject(AuthServiceShared)
-  const router = Inject(Router)
- 
-  if (authService.hasRole(RolesEnum.ADMIN)) {
-   return true;
- } else {
-   router.navigate([Routes_app.dashboard]);
-   return false;
- }
+  const store = inject(Store);
+  const router = inject(Router);
+  return store.select(selectRoles).pipe(
+    take(1), 
+    map((roles: string[]) => {
+      if (roles.includes(RolesEnum.ADMIN)) {
+        return true;
+      } else {
+        router.navigate([Routes_app.dashboard]); 
+        return false;
+      }
+    })
+  );
 };
