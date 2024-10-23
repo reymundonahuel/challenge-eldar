@@ -1,27 +1,121 @@
-# ChallengeEldar
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.3.6.
+# Challenge ELDAR - Angular
 
-## Development server
+Aplicacion web desarrollada en Angular v17 para el cumplimiento del challenge
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+## Instalacion
 
-## Code scaffolding
+![Importante](https://img.shields.io/badge/IMPORTANTE-yellow.svg) 
+A efectos de hacer mas sencilla la prueba, ya se han incluidos los environments.
+ **Esto es una muy mala practica.**  Lo recomendable es guardar los secrets en AWS secret manager y luego hacer el reemplazo en el environment.ts mediante el pipeline (Devops).
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+Se requiere npm para instalar este proyecto y se deben seguir estos pasos:
+```bash
+  git clone https://github.com/reymundonahuel/challenge-eldar.git
+  cd challenge-eldar
+  npm i
+  ng serve --open
+```
+Finalmente se nos abrirá una nueva pestaña en ```localhost:4200```
+## Datos de ingreso
+Para acceder se deben utilizar las siguientes credenciales
+```bash
+email: eve.holt@reqres.in
+password: cityslicka
+```
+**Nota**: Las credenciales deben ser compartidas de forma segura mediante la encriptacion de un PDF con contraseña o un servicio de gestion de contraseñas. A fines practicos, se comparten las credenciales en el readme
+## Apis utilizadas
 
-## Build
+A continuacion se detallan las apis utilizadas para el proyecto:
+- [jsonplaceholder](https://jsonplaceholder.typicode.com/)
+    - Se utilizó para interactura con los posts
+- [reqres.in](https://reqres.in/)
+    - Provee una api basica de autenticacion (fake) con login exitoso y fallido
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
 
-## Running unit tests
+## Librerias utilizadas
+- PrimeNG
+- Primeflex
+    - Estilos compatibles con PrimeNG
+- Primeicons
+    - Iconos propios de PrimeNG
+- crypto-js 
+    - Se utiliza para cifrar el token y datos de usuarios, simulando una autenticacion real y dandole una mayor capa de seguridad
+- sweetalert2
+    - Libreria encargada de crear toast, alertas, etc
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+## Estructura del proyecto
+El proyecto cuenta con 3 categorias de carpetas:
 
-## Running end-to-end tests
+- **Core**
+  - Aqui van todas las configuraciones, constantes, enums, interfaces que se requeriran para el proyecto
+- **Modules**
+  - Aquí van todos los modulos del proyecto. Cada modulo contiene su servicio, y componentes propios del modulo.
+- **Shared**
+  - Aqui van todos los componentes, servicios, etc. Que se comparten en todo el proyecto.
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+### Descripcion de las carpetas
+- **Core**
+ - *decorators*: iran los decoradores que lleguemos a necesitar para el proyecto
+  - *constants*: iran las variables del sistema, como la url de la api, etc.
+  - *enums*: iran los enums del sistema, como roles y permisos
+  - *guards*: separado por roles y rutas. Dado que es un proyecto sin backend, se separa en admin y user, pero debiese ser un solo guard manejado con data de backend 
+  - *interceptor*: Posee un interceptor que le añade el header con Authorization Bearer. Para evitar la duplicidad de codigo en los servicios
+  - *interfaces*: irán las interfaces del sistema, como las interfaces de los posts, cuenta de usuario, login, etc. Para mantener el tipado fuerte
+  - *store*: Irán los state management del proyecto (en caso de que lo hubiese)
+  - *types*: van a ir los types del proyectos. Se usan para mantener un tipado fuerte.
+  - *utils*: Carpeta con funciones y archivos utiles para el desarrollo, como alertas, encriptacion, etc.
+- **Modules**
+  - *auth*: modulo de autenticacion con sus componentes y servicios
+  - *dashboard*: un pequeño dashboard de bienvenida con funciones super simples.
+  - *posts*: modulo de listar posteos, actualizar, crear, eliminar.
+  - ***Nota: Cada modulo cuenta con sus componentes y servicios*** 
+- **Shared**
+  - *components*: componentes compartidos dentro del proyecto, como un container que aplica padding o el menu
+  - *services*: Servicios que se comparten en todo el proyecto, como los de manejo de sesiones, almacenamiento en local storage, etc.
+  - *pipes*: pipes customizados que van a modificar el html, como trucar textos largos, etc.
 
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+```bash
+├───app
+│   ├───core
+│   │   ├───constants
+│   │   ├───decorators
+│   │   ├───enums
+│   │   ├───guards
+│   │   │   ├───roles
+│   │   │   │   ├───admin
+│   │   │   │   └───user
+│   │   │   └───routes
+│   │   ├───interceptor
+│   │   ├───interfaces
+│   │   ├───store
+│   │   ├───types
+│   │   └───utils
+│   ├───modules
+│   │   ├───auth
+│   │   │   ├───components
+│   │   │   │   └───login
+│   │   │   └───services
+│   │   ├───dashboard
+│   │   │   ├───components
+│   │   │   │   └───list
+│   │   │   └───services
+│   │   └───posts
+│   │       ├───components
+│   │       │   ├───add-edit
+│   │       │   └───list
+│   │       └───services
+│   │           └───posts
+│   └───shared
+│       ├───components
+│       │   ├───container
+│       │   │   └───container
+│       │   └───menu-bar
+│       └───services
+│           ├───auth
+│           ├───modals
+│           ├───session
+│           └───storage
+├───assets
+└───environments
+```
