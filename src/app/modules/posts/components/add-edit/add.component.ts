@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MenuBarComponent } from '../../../../shared/components/menu-bar/menu-bar.component';
 import { ContainerComponent } from '../../../../shared/components/container/container/container.component';
@@ -40,7 +40,7 @@ import { DropdownModule } from 'primeng/dropdown';
   templateUrl: './add.component.html',
   styleUrl: './add.component.css',
 })
-export class AddComponent implements OnInit {
+export class AddComponent implements OnInit,OnChanges {
   form: FormGroup;
   @Output() eventEmitter: EventEmitter<string> = new EventEmitter();
   @Input() tipo?: string;
@@ -56,6 +56,7 @@ export class AddComponent implements OnInit {
     private _formbuilder: FormBuilder,
     private postService: PostsService
   ) {
+    console.log(this.datosEditar)
     this.form = this._formbuilder.group({
       title: new FormControl('', [Validators.required]),
       body: new FormControl('', [Validators.required]),
@@ -65,7 +66,17 @@ export class AddComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if (this.tipo === TiposModalEnum.EDITAR && this.datosEditar) {
+    
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['datosEditar'] && this.tipo === TiposModalEnum.EDITAR) {
+      this.setFormValues();
+    }
+  }
+
+  setFormValues(): void {
+    if (this.datosEditar) {
       this.form.controls['title'].setValue(this.datosEditar.title);
       this.form.controls['body'].setValue(this.datosEditar.body);
       this.form.controls['userId'].setValue(this.datosEditar.userId);

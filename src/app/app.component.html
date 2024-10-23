@@ -5,7 +5,7 @@
   [breakpoints]="{ '1199px': '75dvw', '575px': '90dvw' }" 
 >
 <br>
-  <app-add-post [tipo]="modalTipo" [datosEditar]="modalData"  (eventEmitter)="manejarRespuesta($event)"></app-add-post>
+  <app-add-post [tipo]="modalTipo" [datosEditar]="modalData" (eventEmitter)="manejarRespuesta($event)"></app-add-post>
 </p-dialog>
 
 <router-outlet />

@@ -10,43 +10,78 @@ import { toastAlert } from '../../../../core/utils/alerts.utils';
 import { HttpErrorResponse } from '@angular/common/http';
 import { TiposModalEnum } from '../../../../core/enums/tiposModal.enum';
 import { TableModule } from 'primeng/table';
-import {IconFieldModule} from 'primeng/iconfield'
-import {InputIconModule} from 'primeng/inputicon'
+import { IconFieldModule } from 'primeng/iconfield';
+import { InputIconModule } from 'primeng/inputicon';
 import { ButtonModule } from 'primeng/button';
+import { SelectButtonChangeEvent, SelectButtonModule } from 'primeng/selectbutton';
+import { FormsModule } from '@angular/forms';
+import { CommonModule, NgIf } from '@angular/common';
+import { SkeletonModule } from 'primeng/skeleton';
+import { PermisosEnum } from '../../../../core/enums/permissions.enum';
+import { RolesEnum } from '../../../../core/enums/roles.enum';
+
 
 @Component({
   selector: 'app-list',
   standalone: true,
-  imports: [MenuBarComponent, ContainerComponent, CardModule,TableModule,IconFieldModule,InputIconModule,ButtonModule],
+  imports: [
+    MenuBarComponent,
+    ContainerComponent,
+    CardModule,
+    TableModule,
+    IconFieldModule,
+    InputIconModule,
+    ButtonModule,
+    SelectButtonModule,
+    FormsModule,
+    CommonModule,
+    SkeletonModule
+  ],
   templateUrl: './list.component.html',
   styleUrl: './list.component.css',
 })
 export class ListComponent implements OnInit {
   posts: PostsInterface[] = [];
 
-  loadingTabla:boolean = false;
+  loadingTabla: boolean = false;
+  tipoVisualizacion:string = 'table';
+
+  gridOptions: any[] = [
+    { icon: 'pi pi-bars', value:'table' },
+    { icon: 'pi pi-th-large', value:'grid' },
+];
 
   roles: Array<string> = [];
   permisos: Array<string> = [];
+
+  canCreate = PermisosEnum.CREAR_POST;
+  admin = RolesEnum.ADMIN
+
+
   constructor(
     private authShared: AuthServiceShared,
     private modalService: ModalsService,
     private postService: PostsService
   ) {
-    this.roles = this.authShared.getRoles()
-    this.permisos = this.authShared.getPermissions()
+    this.roles = this.authShared.getRoles();
+    this.permisos = this.authShared.getPermissions();
   }
 
   ngOnInit(): void {
     this.getPosts();
   }
 
+  onChangeSelection(event:SelectButtonChangeEvent){
+    this.tipoVisualizacion = event.value
+
+  }
+
   getPosts() {
-    this.loadingTabla = true
+    this.loadingTabla = true;
     this.postService.getPosts().subscribe({
       next: (value) => {
         this.posts = value;
-        this.loadingTabla = false
+        this.loadingTabla = false;
       },
       error: (error: HttpErrorResponse) => {
         console.log(error);
@@ -55,22 +90,29 @@ export class ListComponent implements OnInit {
     });
   }
 
-  createPost(){
-    this.modalService.setModalStatus('create-post',"open",{},TiposModalEnum.CREAR)
+  createPost() {
+    this.modalService.setModalStatus(
+      'create-post',
+      'open',
+      {},
+      TiposModalEnum.CREAR
+    );
   }
 
-  editPost(data:any){
-    this.modalService.setModalStatus('create-post',"open",data,TiposModalEnum.EDITAR)
+  editPost(data: any) {
+    this.modalService.setModalStatus(
+      'create-post',
+      'open',
+      data,
+      TiposModalEnum.EDITAR
+    );
   }
 
-  deletePost(id:string){
+  deletePost(id: number) {
 
   }
 
-  cortarTexto(texto:string){
+  cortarTexto(texto: string) {
     return texto.substring(0, 20) + '...';
   }
-
-
-
 }

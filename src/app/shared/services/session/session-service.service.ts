@@ -22,7 +22,6 @@ export class SessionService {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${this.getToken()} `,
       },
     };
   }
@@ -45,7 +44,7 @@ export class SessionService {
   //Obtiene token
   getToken(){
     try {
-    let token = this.localstorageService.getStorageByKey(LocalStorageKeyEnum.TOKEN) != null ? Desencriptar(this.localstorageService.getStorageByKey(LocalStorageKeyEnum.USER)) : null
+    let token = this.localstorageService.getStorageByKey(LocalStorageKeyEnum.TOKEN) != null ? Desencriptar(this.localstorageService.getStorageByKey(LocalStorageKeyEnum.TOKEN)) : null
      return token
     } catch (error) {
       return null

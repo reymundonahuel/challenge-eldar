@@ -20,11 +20,11 @@ export class AppComponent {
 
   constructor(private modalService: ModalsService) {
     this.modalService.modal$.subscribe((state) => {
-      console.log(state);
       if (state.name === 'create-post') {
         this.modalCreatePost = state.status === 'open';
         this.modalTipo = state.tipo
         this.modalData = state.data
+        console.log(state)
       }
     });
   }

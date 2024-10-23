@@ -20,7 +20,7 @@
             </div>
         </p-card>
     </div>
-    @if (permisos.includes(canCreate) && roles.includes(admin)) {
+    @if (permisos.includes(canCreate) && roles.includes(admin) || false) {
         <div class="sm:col-12 md:col-12 lg:col-4 xl:col-4">
             <p-card header="Crear posts" class="cursor-pointer" (click)="createPostModal()">
                 <div class="text-center pt-5">

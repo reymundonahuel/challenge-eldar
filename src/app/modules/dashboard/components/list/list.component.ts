@@ -46,6 +46,9 @@ export class ListComponent implements OnInit {
           const [roles, permisos] = state['data'];
           this.roles = roles;
           this.permisos = permisos;
+        }else{
+          this.roles = this.authShared.getRoles()
+          this.permisos = this.authShared.getPermissions()
         }
       }
     });
