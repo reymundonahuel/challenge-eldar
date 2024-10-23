@@ -109,7 +109,15 @@ export class ListComponent implements OnInit {
   }
 
   deletePost(id: number) {
-
+    this.postService.deletePost(id).subscribe({
+      next: (value) => {
+        toastAlert(`Se ha eliminado con exito`, 'success');
+      },
+      error: (error: HttpErrorResponse) => {
+        console.log(error);
+        toastAlert(`Ha ocurrido un error`, 'error');
+      },
+    })
   }
 
   cortarTexto(texto: string) {
