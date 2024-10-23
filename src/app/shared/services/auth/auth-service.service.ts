@@ -40,12 +40,12 @@ export class AuthServiceShared {
    return this.permissionsSubject.getValue();
  }
 
- // Verifica si el usuario tiene un rol específico
+ // Verifica si el usuario tiene un rol especifico
  hasRole(role: string): boolean {
    return this.getRoles().includes(role);
  }
 
- // Verifica si el usuario tiene un permiso específico
+ // Verifica si el usuario tiene un permiso especifico
  hasPermission(permission: string): boolean {
    return this.getPermissions().includes(permission);
  }

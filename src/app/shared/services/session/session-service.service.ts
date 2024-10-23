@@ -26,7 +26,7 @@ export class SessionService {
     };
   }
 
-  //Header para hacer peticiones sin token
+  //Header para hacer peticiones sin token - Ya se envian en el interceptor
   public get baseHeadersPublic(){
     return {
       headers: {
