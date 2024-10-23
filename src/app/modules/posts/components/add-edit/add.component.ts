@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MenuBarComponent } from '../../../../shared/components/menu-bar/menu-bar.component';
 import { ContainerComponent } from '../../../../shared/components/container/container/container.component';
@@ -40,7 +40,7 @@ import { DropdownModule } from 'primeng/dropdown';
   templateUrl: './add.component.html',
   styleUrl: './add.component.css',
 })
-export class AddComponent implements OnInit,OnChanges {
+export class AddComponent implements OnInit,OnChanges,OnDestroy {
   form: FormGroup;
   @Output() eventEmitter: EventEmitter<string> = new EventEmitter();
   @Input() tipo?: string;
@@ -67,6 +67,10 @@ export class AddComponent implements OnInit,OnChanges {
 
   ngOnInit(): void {
     
+  }
+
+  ngOnDestroy(): void {
+      this.form.reset()
   }
 
   ngOnChanges(changes: SimpleChanges): void {

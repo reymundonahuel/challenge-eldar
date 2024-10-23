@@ -19,6 +19,7 @@ import { CommonModule, NgIf } from '@angular/common';
 import { SkeletonModule } from 'primeng/skeleton';
 import { PermisosEnum } from '../../../../core/enums/permissions.enum';
 import { RolesEnum } from '../../../../core/enums/roles.enum';
+import { TruncarTextoPipe } from "../../../../shared/pipes/truncar-texto.pipe";
 
 
 @Component({
@@ -35,8 +36,9 @@ import { RolesEnum } from '../../../../core/enums/roles.enum';
     SelectButtonModule,
     FormsModule,
     CommonModule,
-    SkeletonModule
-  ],
+    SkeletonModule,
+    TruncarTextoPipe
+],
   templateUrl: './list.component.html',
   styleUrl: './list.component.css',
 })
@@ -118,6 +120,10 @@ export class ListComponent implements OnInit {
         toastAlert(`Ha ocurrido un error`, 'error');
       },
     })
+    //eliminacion logica solo para que no aparezca en la pantalla
+    var removerObjeto = this.posts.map(item => item.id).indexOf(id);
+    (removerObjeto >= 0) && this.posts.splice(removerObjeto, 1);
+
   }
 
   cortarTexto(texto: string) {

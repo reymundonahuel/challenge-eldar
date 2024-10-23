@@ -1,18 +1,18 @@
 <div style="display: flex; justify-content: center; align-items: center; height: 100vh;" class="bckgrnd">
-    <p-card header="Iniciar Sesión" [style]="{ width: '30vw' }">
+    <p-card header="Iniciar Sesión" styleClass="sm:w-full md:w-full lg:w-full xl:w-full" >
       <div style="text-align: center">
-        <h2 style="font-weight: 900">Challenge ELDAR</h2>
+        <h2 style="font-weight: 900 text-3xl">Challenge ELDAR</h2>
         <br />
       </div>
       <form [formGroup]="form" (ngSubmit)="login()">
       <div style="display: flex; flex-direction: column; align-items: center;">
         <p-floatLabel>
-          <input style="width: 22vw;" type="email" pInputText id="email" formControlName="email" />
+          <input class="w-22rem" type="email" pInputText id="email" formControlName="email" />
           <label for="email">Email</label>
         </p-floatLabel>
         <br />
         <p-floatLabel class="mt-4">
-          <input style="width: 22vw;" minlength="8" type="password" pInputText id="password" formControlName="password" />
+          <input class="w-22rem" minlength="8" type="password" pInputText id="password" formControlName="password" />
           <label for="password">Contraseña</label>
         </p-floatLabel>
         <br>

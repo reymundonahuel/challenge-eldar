@@ -3,7 +3,7 @@
     <div style="display: flex; flex-direction: column; align-items: center">
       <p-floatLabel>
         <input
-        style="width: 100%;"
+        style="width: 22vw"
           type="text"
           pInputText
           id="title"
@@ -18,23 +18,25 @@
           rows="5"
           cols="48"
           pInputTextarea
-          class="w-full"
+          styleClass="w-full"
           formControlName="body"
         >
         </textarea>
         <label for="body">Cuerpo <span style="color: red">*</span></label>
       </p-floatLabel>
       <br />
+      <label for="usuario">Usuario <span style="color: red">*</span></label>
       <p-dropdown
         formControlName="userId"
         [options]="usuarios"
         appendTo="body"
-        [style]="{width:'100%'}"
+        styleClass="w-full"
         [filter]="true"
+        id="usuario"
         placeholder="Asignar un suario para este post"
       />
       <br>
-      <span class="text-center"
+      <span class="text-center font-italic"
         >Atencion: Se agrego este dropdown para hacerlo mas dinamico y visual. <br>
         El userId debe ser el del profile obtenido en login</span
       >
@@ -63,24 +65,30 @@
             <label for="title">Titulo <span style="color: red">*</span></label>
           </p-floatLabel>
           <br />
+          <br>
           <p-floatLabel>
             <textarea
-              id="body"
-              rows="5"
-              cols="30"
-              pInputTextarea
-              formControlName="body"
-            >
-            </textarea>
+          id="body"
+          rows="5"
+          cols="48"
+          pInputTextarea
+          styleClass="w-full"
+          formControlName="body"
+        >
+        </textarea>
             <label for="body">Cuerpo <span style="color: red">*</span></label>
           </p-floatLabel>
           <br />
+          <label for="usuario">Usuario <span style="color: red">*</span></label>
           <p-dropdown
             formControlName="userId"
             [options]="usuarios"
+            appendTo="body"
+            styleClass="w-full"
+            id="usuario"
             placeholder="Asignar un suario para este post"
           />
-          <span
+          <span class="font-italic text-center"
             >Atencion: Se agrego este dropdown para hacerlo mas dinamico y visual.
             El userId debe ser el del profile obtenido en login</span
           >

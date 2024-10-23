@@ -21,7 +21,7 @@
       </div>
       
 
-      <div class="sm:col-12 md:col-12 lg:col-4 xl:col-4 ">
+      <div class="sm:col-12 md:col-12 lg:col-4 xl:col-4 text-right ">
         <div *ngIf="tipoVisualizacion === 'grid'">
           <p-button icon="pi pi-refresh" (onClick)="getPosts()" />
           @if (permisos.includes(canCreate) && roles.includes(admin) || false) {
@@ -100,8 +100,8 @@
       <ng-template pTemplate="body" let-post>
         <tr>
           <td>{{ post?.id }}</td>
-          <td>{{ cortarTexto(post?.title) }}</td>
-          <td>{{ cortarTexto(post?.body) }}</td>
+          <td>{{ post?.title }}</td>
+          <td>{{ post?.body | truncarTexto }}</td>
           <td>{{ post?.userId }}</td>
           @if (permisos.includes(canCreate) && roles.includes(admin) || false) {
           <td>
