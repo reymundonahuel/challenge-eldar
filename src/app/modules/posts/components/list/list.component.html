@@ -137,7 +137,7 @@
 
       
       <div class="sm:col-12 md:col-12 lg:col-4 xl:col-3" *ngFor="let post of posts">
-        <p-card [header]="post.title" [subheader]="'Usuario: ' + post.userId">
+        <p-card [header]="post.title" [subheader]="'Usuario: ' + post.userId" styleClass="shadow-6">
           <p class="text-center font-light">{{ post.body }}</p>
           @if (permisos.includes(canCreate) && roles.includes(admin) || false) {
           <ng-template pTemplate="footer">

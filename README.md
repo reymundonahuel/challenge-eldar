@@ -62,7 +62,7 @@ El proyecto cuenta con 3 categorias de carpetas:
   - *guards*: separado por roles y rutas. Dado que es un proyecto sin backend, se separa en admin y user, pero debiese ser un solo guard manejado con data de backend 
   - *interceptor*: Posee un interceptor que le añade el header con Authorization Bearer. Para evitar la duplicidad de codigo en los servicios
   - *interfaces*: irán las interfaces del sistema, como las interfaces de los posts, cuenta de usuario, login, etc. Para mantener el tipado fuerte
-  - *store*: Irán los state management del proyecto (en caso de que lo hubiese)
+  - *store*: Irán los archivos como state, reducers, actions, selectors, etc.
   - *types*: van a ir los types del proyectos. Se usan para mantener un tipado fuerte.
   - *utils*: Carpeta con funciones y archivos utiles para el desarrollo, como alertas, encriptacion, etc.
 - **Modules**

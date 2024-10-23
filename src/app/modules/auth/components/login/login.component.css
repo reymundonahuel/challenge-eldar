@@ -1,6 +1,7 @@
 .bckgrnd{
-    background-image: url("../../../../../assets/quienesSomos.webp");
+    background-image: url("../../../../../assets/back.jpg");
     background-size: cover;
-    background-position: center;
     background-repeat: no-repeat;
+    background-position: center;
+    height:100vh;
 }
