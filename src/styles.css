@@ -4,3 +4,14 @@
 
 /* Iconos de primeng (se puede utilizar Font Awesome como alternativa) */
 @import "primeicons/primeicons.css";
+
+h1,h2,h3,h4,h5,h6,p,div{
+    font-family: "Inter", sans-serif;
+}
+
+html{
+    background-color: #f5f5f5;
+}
+.cursor-pointer{
+    cursor: pointer;
+}

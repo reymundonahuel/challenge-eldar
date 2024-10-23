@@ -1,43 +1,63 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { AuthServiceService } from '../../services/auth-service.service';
 import {
   FormBuilder,
   FormControl,
   FormGroup,
+  MinLengthValidator,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { ButtonModule } from 'primeng/button';
+import { CardModule } from 'primeng/card';
+import { InputTextModule } from 'primeng/inputtext';
+import { FloatLabelModule } from 'primeng/floatlabel';
 import { toastAlert } from '../../../../core/utils/alerts.utils';
 import { LoginInterface } from '../../../../core/interfaces/login.interfaces';
 import { SessionService } from '../../../../shared/services/session/session-service.service';
 import { AuthServiceShared } from '../../../../shared/services/auth/auth-service.service';
 import { RolesEnum } from '../../../../core/enums/roles.enum';
 import { PermisosEnum } from '../../../../core/enums/permissions.enum';
-import { Router } from '@angular/router';
+import { NavigationExtras, Router } from '@angular/router';
 import { Routes_app } from '../../../../core/constants/routes.constants';
+import { HttpErrorResponse } from '@angular/common/http';
+import { CommonModule } from '@angular/common';
+import { RadioButtonModule } from 'primeng/radiobutton';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [
+    CardModule,
+    InputTextModule,
+    ButtonModule,
+    FloatLabelModule,
+    RadioButtonModule,
+    ReactiveFormsModule,
+    CommonModule
+  ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
 })
-export class LoginComponent {
+export class LoginComponent implements OnDestroy{
   form: FormGroup;
-
+  roles = [RolesEnum.ADMIN,RolesEnum.USER]
   constructor(
     private authService: AuthServiceService,
     private authShared: AuthServiceShared,
     private sessionService: SessionService,
     private _formbuilder: FormBuilder,
-    private router:Router
+    private router: Router
   ) {
     this.form = this._formbuilder.group({
       email: new FormControl('', [Validators.required, Validators.email]),
-      password: new FormControl('', Validators.required),
-      rol: new FormControl('')
+      password: new FormControl('', [Validators.required,Validators.minLength(8)]),
+      rol: new FormControl(''),
     });
+  }
+
+  ngOnDestroy(): void {
+      this.form.reset()
   }
 
   login() {
@@ -51,11 +71,10 @@ export class LoginComponent {
     };
     this.authService.doLogin(data).subscribe({
       next: async (value: any) => {
-        
         //Simulamos que obtenemos un usuario y le guardamos el rol y token, aunque asi deba venir desde backend
         let userData = this.authService.getProfile();
         userData.token = value.token;
-        userData.role = this.form.controls['rol'].value
+        userData.role = this.form.controls['rol'].value;
 
         let token = value.token;
 
@@ -63,16 +82,37 @@ export class LoginComponent {
         this.sessionService.setToken(token);
         this.sessionService.setUserProfile(userData);
 
+        console.log(userData.role)
         //Guardamos los roles y permisos que simulamos
-        this.updateRolesAndPermissions(userData.role)
+        this.updateRolesAndPermissions(userData.role);
 
         //Navegamos hacia el dashboard
-        this.router.navigate([Routes_app.dashboard])
+        const navigationExtras: NavigationExtras = {
+          state: {
+            data: [
+              this.authShared.getRoles(),
+              this.authShared.getPermissions()
+            ]
+          }
+        }; 
+        this.router.navigate([Routes_app.dashboard],navigationExtras);
       },
       error: (error) => {
         toastAlert('Los datos no son correctos', 'error');
       },
     });
+  }
+
+  fallar(){
+    this.authService.fakeLoginUnSuccessfull(this.form.controls['email'].value).subscribe({
+      next: (value)=>{
+        //No hay response, por que devuelve 400
+      },
+      error:(error:HttpErrorResponse)=>{
+        console.log(error)
+        toastAlert(error.error.error,"error")
+      }
+    })
   }
 
   updateRolesAndPermissions(rol: string) {

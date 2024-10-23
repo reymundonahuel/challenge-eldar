@@ -16,6 +16,10 @@ export class AuthServiceService {
     return this.http.post<LoginResponseInterface>(EP_AUTH.login,data,this.sessionService.baseHeadersPublic)
   }
 
+  fakeLoginUnSuccessfull(email:string){
+    return this.http.post<LoginResponseInterface>(EP_AUTH.login,{email},this.sessionService.baseHeadersPublic)
+  }
+
   getProfile():any{
     return {
       name:'John',

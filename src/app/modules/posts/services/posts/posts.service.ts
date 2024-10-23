@@ -17,7 +17,7 @@ export class PostsService {
   ) {}
 
   getPosts() {
-    return this.http.get<PostsInterface>(
+    return this.http.get<PostsInterface[]>(
       EP_POSTS.getPosts,
       this.sessionService.baseHeadersLogged
     );

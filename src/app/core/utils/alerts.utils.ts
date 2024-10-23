@@ -1,6 +1,6 @@
 import Swal, { SweetAlertIcon } from 'sweetalert2'
 
-//Alertas opcionales
+//Toast configurado muy basico para alertas basicas
 export const Toast = Swal.mixin({
     toast: true,
     position: 'top-end',

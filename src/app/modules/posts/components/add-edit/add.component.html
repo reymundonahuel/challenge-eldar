@@ -1,0 +1,94 @@
+<div *ngIf="tipo == tipos.crear">
+  <form [formGroup]="form" (ngSubmit)="submit()">
+    <div style="display: flex; flex-direction: column; align-items: center">
+      <p-floatLabel>
+        <input
+          style="width: 22vw"
+          type="text"
+          pInputText
+          id="title"
+          formControlName="title"
+        />
+        <label for="title">Titulo <span style="color: red">*</span></label>
+      </p-floatLabel>
+      <br />
+      <p-floatLabel>
+        <textarea
+          id="body"
+          rows="5"
+          cols="48"
+          pInputTextarea
+          formControlName="body"
+        >
+        </textarea>
+        <label for="body">Cuerpo <span style="color: red">*</span></label>
+      </p-floatLabel>
+      <br />
+      <p-dropdown
+        formControlName="userId"
+        [options]="usuarios"
+        appendTo="body"
+        [style]="{width: '22vw'}"
+        [filter]="true"
+        placeholder="Asignar un suario para este post"
+      />
+      <br>
+      <span class="text-center"
+        >Atencion: Se agrego este dropdown para hacerlo mas dinamico y visual. <br>
+        El userId debe ser el del profile obtenido en login</span
+      >
+      <br />
+
+      <p-button
+        label="Crear post"
+        [disabled]="form.invalid"
+        (onClick)="submit()"
+      />
+    </div>
+  </form>
+</div>
+
+<div *ngIf="tipo == tipos.editar">
+  <form [formGroup]="form" (ngSubmit)="submit()">
+    <div style="display: flex; flex-direction: column; align-items: center">
+        <p-floatLabel>
+            <input
+              style="width: 22vw"
+              type="text"
+              pInputText
+              id="title"
+              formControlName="title"
+            />
+            <label for="title">Titulo <span style="color: red">*</span></label>
+          </p-floatLabel>
+          <br />
+          <p-floatLabel>
+            <textarea
+              id="body"
+              rows="5"
+              cols="30"
+              pInputTextarea
+              formControlName="body"
+            >
+            </textarea>
+            <label for="body">Cuerpo <span style="color: red">*</span></label>
+          </p-floatLabel>
+          <br />
+          <p-dropdown
+            formControlName="userId"
+            [options]="usuarios"
+            placeholder="Asignar un suario para este post"
+          />
+          <span
+            >Atencion: Se agrego este dropdown para hacerlo mas dinamico y visual.
+            El userId debe ser el del profile obtenido en login</span
+          >
+          <br />
+      <p-button
+        label="Editar post"
+        [disabled]="form.invalid"
+        (onClick)="submit()"
+      />
+    </div>
+  </form>
+</div>

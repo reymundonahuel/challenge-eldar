@@ -1,1 +1,91 @@
-<p>list works!</p>
+<app-menubar></app-menubar>
+<app-container>
+  <p-card header="Posts">
+    <p-table
+      #dt2
+      [value]="posts"
+      [tableStyle]="{ 'min-width': '50rem' }"
+      [rows]="10"
+      styleClass="p-datatable-striped" 
+      dataKey="id"
+      [paginator]="true"
+      responsiveLayout="stack"
+      [rowsPerPageOptions]="[10, 25, 50]"
+      [responsive]="true"
+      [rowHover]="true"
+      [loading]="loadingTabla"
+      id="posts"
+      [autoLayout]="true"
+      [resizableColumns]="true"
+      [globalFilterFields]="['userId', 'id', 'title', 'body']"
+      currentPageReportTemplate="Mostrando de {first} a {last} de {totalRecords} entradas"
+      [showCurrentPageReport]="true"
+    >
+      <ng-template pTemplate="caption">
+        <div class="grid">
+          <div class="md:col-10 sm:col-12" style="text-align: left"></div>
+          <div class="md:col-2 sm:col-12" style="text-align: left">
+            <!-- <p-iconField iconPosition="left" class="ml-auto">
+              <p-inputIcon>
+                  <i class="pi pi-search"></i>
+              </p-inputIcon>
+              <input 
+                  pInputText 
+                  type="text" 
+                  (input)="dt2.filterGlobal($event.target.value, 'contains')" 
+                  placeholder="Buscar cliente" />
+          </p-iconField> -->
+            <p-button icon="pi pi-refresh" (onClick)="getPosts()" />
+            <p-button
+              label="Crear post"
+              icon="pi pi-plus"
+              class="p-button-success"
+              iconPos="right"
+              (onClick)="createPost()"
+              [style]="{ 'margin-left': '2rem' }"
+            />
+          </div>
+        </div>
+      </ng-template>
+
+      <ng-template pTemplate="header">
+        <tr>
+          <th pSortableColumn="id">ID <p-sortIcon field="id" /></th>
+          <th pSortableColumn="title">Titulo<p-sortIcon field="title" /></th>
+          <th pSortableColumn="body">
+            Cuerpo<p-sortIcon field="body" />
+          </th>
+          <th pSortableColumn="userId">
+            Usuario<p-sortIcon field="userId" />
+          </th>
+          <th>Acciones</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-post>
+        <tr>
+          <td>{{ post?.id }}</td>
+          <td>{{ cortarTexto(post?.title) }}</td>
+          <td>{{ cortarTexto(post?.body) }}</td>
+          <td>{{ post?.userId }}</td>
+          <td>
+            <p-button
+              class="mx-2"
+              [rounded]="true"
+              size="small"
+              (onClick)="editPost(post)"
+              icon="pi pi-pencil"
+            ></p-button>
+            <p-button
+              class="mx-2"
+              [rounded]="true"
+              size="small"
+              (onClick)="deletePost(post.id)"
+              [style]="{ background: 'red', color: 'white' }"
+              icon="pi pi-trash"
+            ></p-button>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </p-card>
+</app-container>

@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { NavigationExtras } from '@angular/router';
 import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
@@ -16,7 +17,7 @@ export class AuthServiceShared {
   
   constructor() { }
 
-   // Métodos para manejar roles
+   // Funciones para setear y listar roles
    setRoles(roles: string[]): void {
     this.rolesSubject.next(roles);
   }
@@ -25,7 +26,7 @@ export class AuthServiceShared {
     return this.rolesSubject.getValue();
   }
 
-  // Métodos para manejar permisos
+  // Funciones para setear y listar permisos
   setPermissions(permissions: string[]): void {
     this.permissionsSubject.next(permissions);
   }
@@ -34,13 +35,41 @@ export class AuthServiceShared {
     return this.permissionsSubject.getValue();
   }
 
-  // Verificar si el usuario tiene un rol específico
+  // Verifica si el usuario tiene un rol específico
   hasRole(role: string): boolean {
     return this.getRoles().includes(role);
   }
 
-  // Verificar si el usuario tiene un permiso específico
+  // Verifica si el usuario tiene un permiso específico
   hasPermission(permission: string): boolean {
     return this.getPermissions().includes(permission);
   }
+
+   // Elimina todos los roles
+   deleteRoles(): void {
+    this.rolesSubject.next([]); // Vacía el array de roles
+  }
+
+  // Elimina todos los permisos
+  deletePermissions(): void {
+    this.permissionsSubject.next([]); // Vacía el array de permisos
+  }
+
+  clearRolesAndPermissions(){
+    this.deleteRoles()
+    this.deletePermissions()
+  }
+
+  navigationExtrasWithRoleAndPermission():NavigationExtras{
+    const navigationExtras: NavigationExtras = {
+      state: {
+        data: [
+          this.getRoles(),
+          this.getPermissions()
+        ]
+      }
+    }; 
+    return navigationExtras
+  }
+
 }
