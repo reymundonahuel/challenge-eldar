@@ -56,7 +56,7 @@ El proyecto cuenta con 3 categorias de carpetas:
 
 ### Descripcion de las carpetas
 - **Core**
- - *decorators*: iran los decoradores que lleguemos a necesitar para el proyecto
+  - *decorators*: iran los decoradores que lleguemos a necesitar para el proyecto
   - *constants*: iran las variables del sistema, como la url de la api, etc.
   - *enums*: iran los enums del sistema, como roles y permisos
   - *guards*: separado por roles y rutas. Dado que es un proyecto sin backend, se separa en admin y user, pero debiese ser un solo guard manejado con data de backend 
