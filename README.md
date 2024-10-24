@@ -1,7 +1,11 @@
 
 # Challenge ELDAR - Angular
 
-Aplicacion web desarrollada en Angular v17 para el cumplimiento del challenge
+Aplicacion web desarrollada en Angular v17 para el cumplimiento del challenge.
+
+- Version CLI: 17.3.6
+- Node: 20.9.0
+
 
 ## Instalacion
 
